@@ -15,7 +15,8 @@ Make sure you have Python 3.11 or later installed on your machine. You can downl
 Clone the repository:
 ```bash
 git clone https://github.com/cvpl-fdca/sagalabs_backbone.git
-cd sagalabs_backbone
+cd SagaLabs-Backbone
+
 ```
 
 Then, depending on your operating system, run one of the following scripts to set up a virtual environment and install the necessary packages:
