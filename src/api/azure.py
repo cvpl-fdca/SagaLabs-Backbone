@@ -188,3 +188,88 @@ class SetDisksFast(Resource):
                 compute_client.disks.begin_create_or_update(resource_group_name, disk_name, disk)
 
         return {"message": "All disks have been set to Premium SSD."}, 200
+
+
+@azure_ns.route('/<string:range_name>/start')
+class StartVmsInRange(Resource):
+    def post(self, range_name):
+        # get all resources
+        all_resources = get_resources()
+
+        # get the specific range
+        range_resources = all_resources.get(range_name)
+
+        if range_resources is None:
+            # if the range_id does not exist, return a 404 error
+            azure_ns.abort(404, f"Range {range_name} not found.")
+
+        dc_started = False
+        # iterate through all labs within the range, and for each lab, find all resources of the type
+        # "Microsoft.Compute/virtualMachines"
+        for lab_number, lab_resources in range_resources.items():
+            for resource in lab_resources:
+                if resource['type'] == 'Microsoft.Compute/virtualMachines':
+                    # Extract resource group from VM's ID
+                    resource_group_name = resource['id'].split('/')[4]
+                    vm_name = resource['name']
+
+                    if 'DC' in vm_name:
+                        # Start the DC VM first
+                        compute_client.virtual_machines.begin_start(resource_group_name, vm_name)
+                        dc_started = True
+
+        if not dc_started:
+            azure_ns.abort(400, f"No Domain Controller found in Range {range_name}.")
+
+        # start other VMs
+        for lab_number, lab_resources in range_resources.items():
+            for resource in lab_resources:
+                if resource['type'] == 'Microsoft.Compute/virtualMachines':
+                    resource_group_name = resource['id'].split('/')[4]
+                    vm_name = resource['name']
+
+                    if 'DC' not in vm_name:
+                        # Start the non-DC VM
+                        compute_client.virtual_machines.begin_start(resource_group_name, vm_name)
+
+        return {"message": f"All virtual machines in Range {range_name} are being started."}, 200
+
+
+@azure_ns.route('/<string:range_name>/stop')
+class StopVmsInRange(Resource):
+    def post(self, range_name):
+        # get all resources
+        all_resources = get_resources()
+
+        # get the specific range
+        range_resources = all_resources.get(range_name)
+
+        if range_resources is None:
+            # if the range_id does not exist, return a 404 error
+            azure_ns.abort(404, f"Range {range_name} not found.")
+
+        dc_name = None
+        dc_resource_group = None
+
+        # stop non-DC VMs first
+        for lab_number, lab_resources in range_resources.items():
+            for resource in lab_resources:
+                if resource['type'] == 'Microsoft.Compute/virtualMachines':
+                    resource_group_name = resource['id'].split('/')[4]
+                    vm_name = resource['name']
+
+                    if 'DC' in vm_name:
+                        # Save the DC details for stopping later
+                        dc_name = vm_name
+                        dc_resource_group = resource_group_name
+                    else:
+                        # Stop the non-DC VM
+                        compute_client.virtual_machines.begin_deallocate(resource_group_name, vm_name)
+
+        if dc_name is None or dc_resource_group is None:
+            azure_ns.abort(400, f"No Domain Controller found in Range {range_name}.")
+
+        # Stop the DC VM last
+        compute_client.virtual_machines.begin_deallocate(dc_resource_group, dc_name)
+
+        return {"message": f"All virtual machines in Range {range_name} are being stopped."}, 200
