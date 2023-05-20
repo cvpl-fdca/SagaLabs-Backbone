@@ -16,16 +16,22 @@ Clone the repository:
 ```bash
 git clone https://github.com/cvpl-fdca/sagalabs_backbone.git
 cd SagaLabs-Backbone
-
 ```
 
-Then, depending on your operating system, run one of the following scripts to set up a virtual environment and install the necessary packages:
+Then, depending on your operating system, run one of the following scripts to set up a virtual environment and install the necessary packages (assuming you have `virtualenv` installed):
 
 **Windows:**
+```cmd
 setup.bat
+```
 
 **Mac/Linux:**
-sh setup.sh
+```bash
+./setup.sh
+. venv/bin/activate
+export FLASK_APP=src/main.py
+flask run
+```
 
 ### Adding a New API Endpoint
 

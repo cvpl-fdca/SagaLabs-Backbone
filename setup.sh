@@ -1,5 +1,5 @@
-python -m venv venv
-.\venv\Scripts\activate
-export PYTHONPATH="${PYTHONPATH}:$(pwd)/src"
+#!/bin/bash
+
+virtualenv venv
+source venv/bin/activate
 pip install -r requirements.txt
-export FLASK_APP=src/main.py
