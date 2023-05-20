@@ -43,7 +43,7 @@ Remember to add any necessary input validation, error handling, and documentatio
 ### Running the application
 
 ```bash
-flask run
+flask --app .src/main.py run
 ```
 
 ## Setting Up Pylint
