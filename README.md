@@ -22,15 +22,16 @@ Then, depending on your operating system, run one of the following scripts to se
 
 **Windows:**
 ```cmd
-setup.bat
+virtualenv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
 **Mac/Linux:**
 ```bash
-./setup.sh
+virtualenv venv
 . venv/bin/activate
-export FLASK_APP=src/main.py
-flask run
+pip install -r requirements.txt
 ```
 
 ### Adding a New API Endpoint
@@ -49,7 +50,7 @@ Remember to add any necessary input validation, error handling, and documentatio
 ### Running the application
 
 ```bash
-flask --app .src/main.py run
+flask run
 ```
 
 ## Setting Up Pylint
