@@ -1,6 +1,18 @@
-# SagaLabs Backbone
+<div align="center">
 
-This is the official repository for SagaLabs Backbone, an API backbone for SagaLabs interaction. The API is built using Flask and Flask-RESTX, which provides Swagger-based interactive documentation.
+<h1>🔌 SagaLabs-Backbone</h1>
+
+<a href="/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg?longCache=true&style=flat-square" alt="licence"></a>
+<a href="https://github.com/cvpl-fdca/Sagalabs-Backbone/issues"><img src="https://img.shields.io/github/issues/cvpl-fdca/SagaLabs-Backbone" alt="issues"></a>
+<br>
+
+<img src="https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white"/>
+<img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"/>
+<a href="https://www.linkedin.com/company/foreningen-for-danske-cyber-alumner"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
+
+</div>
+
+The purpose of SagaLabs Backbone is to serve as a central system that handles API communication and control of SagaLabs environments. It acts as a bridge between different components and services in the SagaLabs architecture, enabling efficient communication, management, and coordination of activities across these environments. This contributes to a more seamless and efficient operation of the SagaLabs environment as a whole.
 
 ## Getting Started
 
@@ -66,3 +78,4 @@ Follow these steps to set up Pylint:
 3. **Configure Pylint rules**: If we have a specific Pylint configuration for this project, you'll find a `.pylintrc` file in the root directory. This file contains the rules that Pylint will enforce. If you want to know more about each rule, you can find a list of all Pylint rules and their explanations in the [Pylint documentation](http://pylint.pycqa.org/en/latest/technical_reference/features.html).
 
 Now, whenever you save a Python file in VS Code, Pylint will check your code and highlight any issues it finds. You can also see a list of all issues by opening the Problems view (`Ctrl+Shift+M`).
+=======
