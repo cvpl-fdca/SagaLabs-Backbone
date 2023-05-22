@@ -1,0 +1,11 @@
+APScheduler==3.10.1
+azure-common==1.1.28
+azure-core==1.26.4
+azure-identity==1.13.0
+azure-mgmt-compute==29.1.0
+azure-mgmt-core==1.4.0
+azure-mgmt-network==23.0.1
+azure-mgmt-resource==23.0.0
+Flask==2.3.2
+flask-restx==1.1.0
+python-dotenv==1.0.0
