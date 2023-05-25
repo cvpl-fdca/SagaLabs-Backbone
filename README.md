@@ -65,6 +65,36 @@ Remember to add any necessary input validation, error handling, and documentatio
 flask run
 ```
 
+### Setting Up Redis
+
+1. Install Docker Desktop:
+   - Download and install Docker Desktop for your operating system from the official Docker website: <https://www.docker.com/products/docker-desktop>
+   - Follow the installation instructions specific to your operating system.
+
+2. Pull the Redis Docker image:
+   - Open a terminal or command prompt.
+   - Run the following command to pull the latest Redis image from Docker Hub:
+     ```
+     docker pull redis
+     ```
+
+3. Start a Redis container:
+   - Run the following command to start a Redis container named `local-redis`:
+
+ ```
+ docker run --name local-redis -p 6379:6379 -d redis
+ ```
+
+
+- This command maps port 6379 inside the Redis container to port 6379 on your local machine. You can modify the port mapping as needed.
+
+1. Verify Redis is running:
+   - You can check if the Redis container is running by executing the following command:
+     ```
+     docker ps
+     ```
+   - You should see the `local-redis` container listed along with its status.
+
 ## Setting Up Pylint
 
 Pylint is a tool that we use to maintain a consistent coding style across the project. It's already installed in your virtual environment via the `requirements.txt` file, but you'll also need the Pylint extension for Visual Studio Code.
@@ -78,4 +108,4 @@ Follow these steps to set up Pylint:
 3. **Configure Pylint rules**: If we have a specific Pylint configuration for this project, you'll find a `.pylintrc` file in the root directory. This file contains the rules that Pylint will enforce. If you want to know more about each rule, you can find a list of all Pylint rules and their explanations in the [Pylint documentation](http://pylint.pycqa.org/en/latest/technical_reference/features.html).
 
 Now, whenever you save a Python file in VS Code, Pylint will check your code and highlight any issues it finds. You can also see a list of all issues by opening the Problems view (`Ctrl+Shift+M`).
-=======
+
