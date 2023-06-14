@@ -1,6 +1,6 @@
 from azure.identity import DefaultAzureCredential
 from flask_restx import Namespace, Resource
-from tasks.azureTasks import get_resources
+from src.tasks.azureTasks import get_resources
 from azure.mgmt.compute import ComputeManagementClient
 from dotenv import load_dotenv
 import os

@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from . import azureTasks
-from tasks.azureTasks import *
+from src.tasks.azureTasks import *
 
 # Create a scheduler instance
 scheduler = BackgroundScheduler()

@@ -7,9 +7,9 @@ from base64 import b64encode
 from dotenv import load_dotenv
 import os
 
-from api.azure import VpnPublicIPAddresses
-from tasks.azureTasks import get_resources
-from utils import AzKeyVault
+from src.api.azure import VpnPublicIPAddresses
+from src.tasks.azureTasks import get_resources
+from src.utils import AzKeyVault
 import atexit
 import tempfile
 
@@ -18,6 +18,7 @@ load_dotenv()
 vpn_ns = Namespace('vpn', description='vpn related operations')
 
 API_KEY = AzKeyVault.AzKeyVault.get_secret("sagalabs-vpn-api-key")
+
 # Generate the base64 encoded basic auth string
 basic_auth_str = base64.b64encode("sagavpn-api:".encode() + API_KEY.encode()).decode()
 HEADERS = {"Authorization": "Basic " + basic_auth_str, "Content-Type": "application/x-www-form-urlencoded"}

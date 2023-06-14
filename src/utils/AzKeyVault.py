@@ -1,6 +1,6 @@
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
-from utils.ConfigManager import ConfigManager
+from src.utils.ConfigManager import ConfigManager
 
 
 class AzKeyVault:
