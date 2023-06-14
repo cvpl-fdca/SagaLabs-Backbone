@@ -20,31 +20,87 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Make sure you have Python 3.11 or later installed on your machine. You can download Python from the [official website](https://www.python.org/downloads/).
+Make sure you have Python 3.11 or later installed on your machine. You can download Python from the [official website](https://www.python.org/downloads/). Not neccesary when using docker
 
 ### Installation
 
 Clone the repository:
+
 ```bash
 git clone https://github.com/cvpl-fdca/sagalabs_backbone.git
 cd SagaLabs-Backbone
 ```
 
-Then, depending on your operating system, run one of the following scripts to set up a virtual environment and install the necessary packages (assuming you have `virtualenv` installed):
+### Using Docker (Recommended)
 
-**Windows:**
-```cmd
-virtualenv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
-```
+To use Docker for running SagaLabs-Backbone, follow the steps below based on your operating system:
 
-**Mac/Linux:**
-```bash
-virtualenv venv
-. venv/bin/activate
-pip install -r requirements.txt
-```
+<details>
+<summary><strong>Windows</strong></summary>
+
+1. Install Docker:
+   - Visit the [Docker website](https://www.docker.com/) and download the appropriate version of Docker for Windows.
+   - Run the installer and follow the on-screen instructions to complete the installation.
+
+2. Once Docker is installed, open a terminal or command prompt.
+
+3. Navigate to the project directory (`SagaLabs-Backbone`) using the `cd` command:
+
+   ```bash
+   cd SagaLabs-Backbone
+   ```
+
+4. To build and run the Docker containers based on the provided configuration, execute the following command:
+
+   ```bash
+   docker-compose up --build
+   ```
+</details>
+
+<details>
+<summary><strong>Mac</strong></summary>
+
+1. Install Docker:
+   - Visit the [Docker website](https://www.docker.com/) and download the appropriate version of Docker for Mac.
+   - Double-click the downloaded `.dmg` file and follow the on-screen instructions to install Docker.
+
+2. Once Docker is installed, open a terminal.
+
+3. Navigate to the project directory (`SagaLabs-Backbone`) using the `cd` command:
+
+   ```bash
+   cd SagaLabs-Backbone
+   ```
+
+4. To build and run the Docker containers based on the provided configuration, execute the following command:
+
+   ```bash
+   docker-compose up --build
+   ```
+</details>
+
+<details>
+<summary><strong>Linux</strong></summary>
+
+1. Install Docker:
+   - Visit the [Docker website](https://www.docker.com/) and follow the instructions to install Docker for your Linux distribution.
+   - Make sure to follow any post-installation steps mentioned in the Docker documentation.
+
+2. Once Docker is installed, open a terminal.
+
+3. Navigate to the project directory (`SagaLabs-Backbone`) using the `cd` command:
+
+   ```bash
+   cd SagaLabs-Backbone
+   ```
+
+4. To build and run the Docker containers based on the provided configuration, execute the following command:
+
+   ```bash
+   docker-compose up --build
+   ```
+</details>
+
 
 ### Adding a New API Endpoint
 
