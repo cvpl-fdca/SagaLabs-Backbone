@@ -31,6 +31,16 @@ git clone https://github.com/cvpl-fdca/sagalabs_backbone.git
 cd SagaLabs-Backbone
 ```
 
+And then create a file called .env with neccesary secrets currently stored in FDCA's password manager. Put this in the root dir.
+```bash
+AZURE_SUBSCRIPTION_ID=<Secret>
+SAGAVPN_API_KEY=<Secret>
+
+AZURE_CLIENT_ID=<Secret>
+AZURE_TENANT_ID=<Secret>
+AZURE_CLIENT_SECRET=<Secret>
+```
+
 ### Using Docker (Recommended)
 
 To use Docker for running SagaLabs-Backbone, follow the steps below based on your operating system:
