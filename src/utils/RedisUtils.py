@@ -1,7 +1,12 @@
 import redis
+import os
+
 
 class RedisUtils:
-    def __init__(self, host='localhost', port=6379, db=0):
+    redis_host = os.environ.get('REDIS_HOST', 'localhost')
+    print(redis_host)
+
+    def __init__(self, host=redis_host, port=6379, db=0):
         self.host = host
         self.port = port
         self.db = db

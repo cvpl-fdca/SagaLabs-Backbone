@@ -12,6 +12,8 @@ COPY .env .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+#Set the redis network host name
+ENV REDIS_HOST=redis
 
 # Expose the port on which your Flask app runs
 EXPOSE 5000

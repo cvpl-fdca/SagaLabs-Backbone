@@ -20,12 +20,16 @@ resource_client = ResourceManagementClient(credential, os.getenv("AZURE_SUBSCRIP
 network_client = NetworkManagementClient(credential, os.getenv("AZURE_SUBSCRIPTION_ID"))
 
 # Instantiate Redis
-r = redis.Redis(host='localhost', port=6379, db=0)
+redis_host = os.environ.get('REDIS_HOST', 'localhost')
+if redis_host != "redis":
+    print("Redis host environment variable not set. Meaby we are developing and this isnt running in docker? "
+          "Defaulting to: " + redis_host)
+r = redis.Redis(host=redis_host, port=6379, db=0)
 
 
 def poll_resources():
     resources_dict = {}
-
+    print(redis_host)
     for resource_group in resource_client.resource_groups.list():
         try:
             if resource_group.tags and resource_group.tags.get('lab') == 'true':
