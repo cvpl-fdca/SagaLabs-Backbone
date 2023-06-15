@@ -9,7 +9,7 @@ The structure of the `tasks` module is as follows:
 ```bash
 tasks/
 ├── init.py
-├── azure_tasks.py
+├── azureTasks.py
 ├── deploy_tasks.py
 └── vpn_tasks.py
 ```
