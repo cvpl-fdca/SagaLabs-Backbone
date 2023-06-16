@@ -10,7 +10,7 @@ auth = HTTPTokenAuth(scheme='Bearer')
 @auth.verify_token
 def verify_token(token):
     # Bypass authentication for Swagger UI
-    if request.path == '/api/swagger.json':
+    if request.path == '/swagger.json':
         return True
     # os.getenv('SERVER_TOKEN')
     server_token = os.getenv("SERVER_TOKEN")
