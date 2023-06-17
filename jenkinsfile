@@ -40,9 +40,9 @@ pipeline {
 
         stage('Get .env file') {
             steps {
-                withCredentials([string(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_CONTENT')]) {
+                withCredentials([file(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_PATH')]) {
                     sh '''
-                        echo "${ENV_FILE_CONTENT}" > .env
+                        cp "${ENV_FILE_PATH}" .env
                     '''
                 }
             }
