@@ -1,5 +1,8 @@
 # __init__.py
-from flask import Flask
+import os
+
+from flask import Flask, url_for
+from flask import send_from_directory
 
 from flask_restx import Api
 
@@ -32,6 +35,11 @@ def create_app():
 
     # Add the login route to the Flask app
     app.add_url_rule('/login', 'login', login)
+
+    @app.route('/favicon.ico')
+    def favicon():
+        return send_from_directory(os.path.join(app.root_path, 'static'),
+                                   'sagalabs.png', mimetype='image/vnd.microsoft.icon')
 
     return app
 

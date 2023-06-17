@@ -2,4 +2,4 @@
 from flask import render_template
 
 def login():
-    return render_template('login.html')
+    return render_template('firebaseLogin/login.html')
