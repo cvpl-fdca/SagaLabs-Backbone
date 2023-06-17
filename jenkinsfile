@@ -1,6 +1,10 @@
 pipeline {
     agent { label 'SagaLabs1' }
 
+    parameters {
+        file(name: 'envFile', description: 'Upload the .env file', optional: true)
+    }
+
     stages {
         stage('Check Docker Installation') {
             steps {
@@ -38,13 +42,16 @@ pipeline {
             }
         }
 
-        stage('Get .env file') {
+        stage('Add .env file') {
             steps {
-                dir('SagaLabs-Backbone') {
-                    withCredentials([file(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_PATH')]) {
-                        sh '''
-                            cp $ENV_FILE_PATH .
-                        '''
+                script {
+                    if (env.envFile != null) {
+                        // Copy the uploaded .env file to the repository directory
+                        copyArtifacts(projectName: env.envFile, selector: [$class: 'StatusBuildSelector'])
+                        // Rename the copied file to .env
+                        sh 'mv $env.envFile SagaLabs-Backbone/.env'
+                    } else {
+                        echo 'No .env file uploaded. Skipping.'
                     }
                 }
             }
