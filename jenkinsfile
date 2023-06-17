@@ -1,5 +1,5 @@
 pipeline {
-    agent SagaLabs1
+    agent { label 'SagaLabs1' }
 
     stages {
         stage('Check Docker Installation') {
