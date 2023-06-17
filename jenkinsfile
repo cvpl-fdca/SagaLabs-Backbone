@@ -43,7 +43,7 @@ pipeline {
                 dir('SagaLabs-Backbone') {
                     withCredentials([file(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_PATH')]) {
                         sh '''
-                            cp -p "${ENV_FILE_PATH}" .
+                            cp $ENV_FILE_PATH .
                         '''
                     }
                 }
