@@ -46,10 +46,10 @@ pipeline {
             steps {
                 script {
                     if (env.envFile != null) {
-                        // Copy the uploaded .env file to the repository directory
-                        copyArtifacts(projectName: env.envFile, selector: [$class: 'StatusBuildSelector'])
-                        // Rename the copied file to .env
-                        sh 'mv $env.envFile SagaLabs-Backbone/.env'
+                        // Store the uploaded .env file as a Jenkins secret
+                        withCredentials([file(credentialsId: 'env-file-backbone', variable: 'envFile')]) {
+                            sh 'cp $envFile SagaLabs-Backbone/.env'
+                        }
                     } else {
                         echo 'No .env file uploaded. Skipping.'
                     }
