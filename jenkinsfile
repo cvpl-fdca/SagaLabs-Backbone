@@ -40,17 +40,21 @@ pipeline {
 
         stage('Get .env file') {
             steps {
-                withCredentials([file(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_PATH')]) {
-                    sh '''
-                        cp "${ENV_FILE_PATH}" .env
-                    '''
+                dir('SagaLabs-Backbone') {
+                    withCredentials([file(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_PATH')]) {
+                        sh '''
+                            cp "${ENV_FILE_PATH}" .env
+                        '''
+                    }
                 }
             }
         }
 
         stage('Docker Compose Build and Run') {
             steps {
-                sh 'docker-compose up --build -d'
+                dir('SagaLabs-Backbone') {
+                    sh 'docker-compose up --build -d'
+                }
             }
         }
     }
