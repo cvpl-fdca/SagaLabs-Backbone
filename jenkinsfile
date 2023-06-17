@@ -1,6 +1,11 @@
 pipeline {
     agent { label 'SagaLabs1' }
-
+    parameters {
+        string(name: 'ENV', defaultValue: 'development', description: 'Environment to deploy')
+    }
+    environment {
+        BRANCH_NAME = "${env.BRANCH_NAME}"
+    }
     stages {
         stage('Check Docker Installation') {
             steps {
@@ -34,7 +39,7 @@ pipeline {
 
         stage('Clone GitHub repository') {
             steps {
-                git url: 'https://github.com/cvpl-fdca/SagaLabs-Backbone.git'
+                git branch: "${BRANCH_NAME}", url: 'https://github.com/cvpl-fdca/SagaLabs-Backbone.git'
             }
         }
 
