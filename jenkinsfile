@@ -39,7 +39,7 @@ pipeline {
 
         stage('Clone GitHub repository') {
             steps {
-                git branch: "${BRANCH_NAME}", url: 'https://github.com/cvpl-fdca/SagaLabs-Backbone.git'
+                git branch: "${params.ENV}", url: 'https://github.com/cvpl-fdca/SagaLabs-Backbone.git'
             }
         }
 
