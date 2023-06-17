@@ -1,10 +1,11 @@
 pipeline {
     agent { label 'SagaLabs1' }
-
     parameters {
-        file(name: 'envFile', description: 'Upload the .env file', optional: true)
+        string(name: 'ENV', defaultValue: 'development', description: 'Environment to deploy')
     }
-
+    environment {
+        BRANCH_NAME = "${env.BRANCH_NAME}"
+    }
     stages {
         stage('Check Docker Installation') {
             steps {
@@ -38,21 +39,16 @@ pipeline {
 
         stage('Clone GitHub repository') {
             steps {
-                git url: 'https://github.com/cvpl-fdca/SagaLabs-Backbone.git'
+                git branch: "${params.ENV}", url: 'https://github.com/cvpl-fdca/SagaLabs-Backbone.git'
             }
         }
 
-        stage('Add .env file') {
+        stage('Get .env file') {
             steps {
-                script {
-                    if (env.envFile != null) {
-                        // Store the uploaded .env file as a Jenkins secret
-                        withCredentials([file(credentialsId: 'env-file-backbone', variable: 'envFile')]) {
-                            sh 'cp $envFile SagaLabs-Backbone/.env'
-                        }
-                    } else {
-                        echo 'No .env file uploaded. Skipping.'
-                    }
+                    withCredentials([file(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_PATH')]) {
+                        sh '''
+                            cp -p "${ENV_FILE_PATH}" SagaLabs-Backbone/.env
+                        '''
                 }
             }
         }
