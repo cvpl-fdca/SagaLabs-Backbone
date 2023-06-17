@@ -14,15 +14,11 @@
 
 The purpose of SagaLabs Backbone is to serve as a central system that handles API communication and control of SagaLabs environments. It acts as a bridge between different components and services in the SagaLabs architecture, enabling efficient communication, management, and coordination of activities across these environments. This contributes to a more seamless and efficient operation of the SagaLabs environment as a whole.
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-### Prerequisites
+## Prerequisites
 
 Make sure you have Python 3.11 or later installed on your machine. You can download Python from the [official website](https://www.python.org/downloads/). Not neccesary when using docker
 
-### Installation
+# Installation
 
 Clone the repository:
 
@@ -41,78 +37,29 @@ AZURE_TENANT_ID=<Secret>
 AZURE_CLIENT_SECRET=<Secret>
 ```
 
-### Using Docker (Recommended)
-
-To use Docker for running SagaLabs-Backbone, follow the steps below based on your operating system:
-
-<details>
-<summary><strong>Windows</strong></summary>
+## Using Docker (Recommended)
 
 1. Install Docker:
-   - Visit the [Docker website](https://www.docker.com/) and download the appropriate version of Docker for Windows.
-   - Run the installer and follow the on-screen instructions to complete the installation.
-
-2. Once Docker is installed, open a terminal or command prompt.
-
-3. Navigate to the project directory (`SagaLabs-Backbone`) using the `cd` command:
-
-   ```bash
-   cd SagaLabs-Backbone
-   ```
-
-4. To build and run the Docker containers based on the provided configuration, execute the following command:
-
-   ```bash
-   docker-compose up --build
-   ```
-</details>
-
-<details>
-<summary><strong>Mac</strong></summary>
-
-1. Install Docker:
-   - Visit the [Docker website](https://www.docker.com/) and download the appropriate version of Docker for Mac.
-   - Double-click the downloaded `.dmg` file and follow the on-screen instructions to install Docker.
-
-2. Once Docker is installed, open a terminal.
-
-3. Navigate to the project directory (`SagaLabs-Backbone`) using the `cd` command:
-
-   ```bash
-   cd SagaLabs-Backbone
-   ```
-
-4. To build and run the Docker containers based on the provided configuration, execute the following command:
-
-   ```bash
-   docker-compose up --build
-   ```
-</details>
-
-<details>
-<summary><strong>Linux</strong></summary>
-
-1. Install Docker:
-   - Visit the [Docker website](https://www.docker.com/) and follow the instructions to install Docker for your Linux distribution.
+   - Visit the [Docker website](https://www.docker.com/) and follow the instructions to install Docker for your operating system.
    - Make sure to follow any post-installation steps mentioned in the Docker documentation.
 
 2. Once Docker is installed, open a terminal.
 
 3. Navigate to the project directory (`SagaLabs-Backbone`) using the `cd` command:
 
-   ```bash
-   cd SagaLabs-Backbone
-   ```
+    ```bash
+    cd SagaLabs-Backbone
+    ```
 
 4. To build and run the Docker containers based on the provided configuration, execute the following command:
 
-   ```bash
-   docker-compose up --build
-   ```
-</details>
+    ```bash
+    docker compose up --build
+    ```
 
+# Development
 
-### Adding a New API Endpoint
+## Adding a New API Endpoint
 
 To add a new API endpoint, create a new route and resource class in the appropriate file in the `api` directory. Here's an example:
 
@@ -125,21 +72,24 @@ class NewEndpoint(Resource):
 Remember to add any necessary input validation, error handling, and documentation.
 
 
-### Running the application
+## Running the application
 
 ```bash
 flask run
 ```
 
-### Setting Up Redis
+## Setting Up Redis
 
 1. Install Docker Desktop:
-   - Download and install Docker Desktop for your operating system from the official Docker website: <https://www.docker.com/products/docker-desktop>
+
+   - Download and install Docker Desktop for your operating system from the official Docker website: https://www.docker.com/products/docker-desktop
    - Follow the installation instructions specific to your operating system.
 
 2. Pull the Redis Docker image:
+
    - Open a terminal or command prompt.
    - Run the following command to pull the latest Redis image from Docker Hub:
+
      ```
      docker pull redis
      ```
@@ -147,18 +97,21 @@ flask run
 3. Start a Redis container:
    - Run the following command to start a Redis container named `local-redis`:
 
- ```
- docker run --name local-redis -p 6379:6379 -d redis
- ```
+        ```
+        docker run --name local-redis -p 6379:6379 -d redis
+        ```
 
 
-- This command maps port 6379 inside the Redis container to port 6379 on your local machine. You can modify the port mapping as needed.
+    - This command maps port 6379 inside the Redis container to port 6379 on your local machine. You can modify the port mapping as needed.
 
 1. Verify Redis is running:
+
    - You can check if the Redis container is running by executing the following command:
-     ```
-     docker ps
-     ```
+
+        ```
+        docker ps
+        ```
+
    - You should see the `local-redis` container listed along with its status.
 
 ## Setting Up Pylint
@@ -174,4 +127,3 @@ Follow these steps to set up Pylint:
 3. **Configure Pylint rules**: If we have a specific Pylint configuration for this project, you'll find a `.pylintrc` file in the root directory. This file contains the rules that Pylint will enforce. If you want to know more about each rule, you can find a list of all Pylint rules and their explanations in the [Pylint documentation](http://pylint.pycqa.org/en/latest/technical_reference/features.html).
 
 Now, whenever you save a Python file in VS Code, Pylint will check your code and highlight any issues it finds. You can also see a list of all issues by opening the Problems view (`Ctrl+Shift+M`).
-
