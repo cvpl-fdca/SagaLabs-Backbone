@@ -1,4 +1,3 @@
-# __init__.py
 import os
 
 from flask import Flask, url_for
@@ -19,11 +18,11 @@ def create_app():
     from .authentication.login import login
 
     authorizations = {
-        'Server authentication': {
+        'Server Key': {
             'type': 'apiKey',
             'in': 'header',
-            'name': 'Authorization'
-        }
+            'name': 'Authorization',
+        },
     }
 
     api = Api(app, title='SagaLabs Backbone API', version='1.0', authorizations=authorizations,
@@ -42,6 +41,3 @@ def create_app():
                                    'sagalabs.png', mimetype='image/vnd.microsoft.icon')
 
     return app
-
-
-

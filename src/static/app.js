@@ -1,3 +1,5 @@
+// static/app.js
+
 /*
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
@@ -99,6 +101,16 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 ui.disableAutoSignIn();
 
 
+// Set auth persistence to LOCAL
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.error("Error setting persistence:", errorCode, errorMessage);
+  });
+
+
 /**
  * @return {string} The URL of the FirebaseUI standalone widget.
  */
@@ -162,6 +174,8 @@ var handleSignedOutUser = function() {
   document.getElementById('user-signed-out').style.display = 'block';
   ui.start('#firebaseui-container', getUiConfig());
 };
+
+
 
 // Listen to change in auth state so it displays the correct UI for when
 // the user is signed in or not.
