@@ -34,9 +34,17 @@ pipeline {
 
         stage('Clone GitHub repository') {
             steps {
-                // Assuming you have your GitHub credentials set in Jenkins' credentials store
-                // as 'github-credentials-id'
-                git credentialsId: 'github-credentials-id', url: 'https://github.com/username/repository.git'
+                git url: 'https://github.com/cvpl-fdca/SagaLabs-Backbone.git'
+            }
+        }
+
+        stage('Get .env file') {
+            steps {
+                withCredentials([string(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_CONTENT')]) {
+                    sh '''
+                        echo "${ENV_FILE_CONTENT}" > .env
+                    '''
+                }
             }
         }
 
