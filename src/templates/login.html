@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SagaLabs-Authenticator</title>
+
+  <!-- Firebase UI -->
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+</head>
+<body>
+  <!-- The surrounding HTML is just for demo purposes, remove or change to your needs -->
+  <div id="firebaseui-auth-container"></div>
+  <div id="loader">Loading...</div>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+
+  <!-- Firebase Authentication -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+
+  <!-- Firebase UI -->
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+
+  <!-- TODO: Replace this with your Firebase project's configuration -->
+  <script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyBkoNUgQMaHxF-BKmWpqMdkCyWCxVCp9ZQ",
+    authDomain: "sagalabs-auth.firebaseapp.com",
+    projectId: "sagalabs-auth",
+    storageBucket: "sagalabs-auth.appspot.com",
+    messagingSenderId: "567952038409",
+    appId: "1:567952038409:web:9b0e3d74139e07ecc0b6d8",
+    measurementId: "G-NJCNMBZPEX"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Get redirect URL from URL parameters
+  var urlParams = new URLSearchParams(window.location.search);
+  var redirectUrl = urlParams.get('redirect');
+
+  // FirebaseUI config
+  var uiConfig = {
+    callbacks: {
+      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+        return true;
+      },
+      uiShown: function() {
+        document.getElementById('loader').style.display = 'none';
+      }
+    },
+    signInFlow: 'popup',
+    signInSuccessUrl: redirectUrl || '<DEFAULT_URL_IF_NO_REDIRECT_PARAMETER_PRESENT>',
+    signInOptions: [
+      firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID, // Added Google Auth Provider
+      firebase.auth.GithubAuthProvider.PROVIDER_ID, // Added GitHub Auth Provider
+    ],
+  };
+
+  // Initialize the FirebaseUI Widget using Firebase
+  var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+  // The start method will wait until the DOM is loaded
+  ui.start('#firebaseui-auth-container', uiConfig);
+  </script>
+</body>
+</html>
