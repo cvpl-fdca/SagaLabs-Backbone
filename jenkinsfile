@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Setup Docker') {
+            steps {
+                script {
+                    // Check if Docker is installed
+                    def dockerInstalled = sh(script: 'which docker', returnStatus: true) == 0
+                    // If Docker is not installed, then install it
+                    if (!dockerInstalled) {
+                        echo 'Docker is not installed, installing...'
+                        sh '''
+                            curl -fsSL https://get.docker.com -o get-docker.sh
+                            sh get-docker.sh
+                        '''
+                    } else {
+                        echo 'Docker is already installed, skipping installation.'
+                    }
+                }
+            }
+        }
+
+        stage('Clone GitHub repository') {
+            steps {
+                // Assuming you have your GitHub credentials set in Jenkins' credentials store
+                // as 'github-credentials-id'
+                git credentialsId: 'github-credentials-id', url: 'https://github.com/username/repository.git'
+            }
+        }
+
+        stage('Setup Docker Compose') {
+            steps {
+                script {
+                    // Check if Docker Compose is installed
+                    def dockerComposeInstalled = sh(script: 'which docker-compose', returnStatus: true) == 0
+                    // If Docker Compose is not installed, then install it
+                    if (!dockerComposeInstalled) {
+                        echo 'Docker Compose is not installed, installing...'
+                        sh '''
+                            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                            chmod +x /usr/local/bin/docker-compose
+                        '''
+                    } else {
+                        echo 'Docker Compose is already installed, skipping installation.'
+                    }
+                }
+            }
+        }
+
+        stage('Docker Compose Build and Run') {
+            steps {
+                sh 'docker-compose up --build -d'
+            }
+        }
+    }
+}
