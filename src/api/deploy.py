@@ -1,3 +1,4 @@
+# api/deploy.py
 from flask_restx import Namespace, Resource
 
 deploy_ns = Namespace('deploy', description='Terraform and azure deployement related operations')

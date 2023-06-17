@@ -1,5 +1,8 @@
+# api/azure.py
 from azure.identity import DefaultAzureCredential
 from flask_restx import Namespace, Resource
+
+from src.authentication.auth import auth
 from src.tasks.azureTasks import get_resources
 from azure.mgmt.compute import ComputeManagementClient
 from dotenv import load_dotenv
@@ -17,6 +20,7 @@ azure_ns = Namespace('azure', description='Azure related operations')
 # endpoint for getting all ranges
 @azure_ns.route('/ranges')
 class Ranges(Resource):
+    @auth.login_required
     def get(self):
         # Assuming `resources` is a global list where you store your resources
         # from the task scheduler, you can simply return it here.
@@ -27,6 +31,7 @@ class Ranges(Resource):
 
 @azure_ns.route('/<string:range_name>')
 class Range(Resource):
+    @auth.login_required
     def get(self, range_name):
         # get all resources
         all_resources = get_resources()
