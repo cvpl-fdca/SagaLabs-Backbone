@@ -1,21 +1,32 @@
 pipeline {
-    agent any
+    agent SagaLabs1
 
     stages {
-        stage('Setup Docker') {
+        stage('Check Docker Installation') {
             steps {
                 script {
                     // Check if Docker is installed
                     def dockerInstalled = sh(script: 'which docker', returnStatus: true) == 0
-                    // If Docker is not installed, then install it
+                    // If Docker is not installed, then echo a message
                     if (!dockerInstalled) {
-                        echo 'Docker is not installed, installing...'
-                        sh '''
-                            curl -fsSL https://get.docker.com -o get-docker.sh
-                            sh get-docker.sh
-                        '''
+                        error('Docker is not installed. Please install Docker before running this pipeline.')
                     } else {
-                        echo 'Docker is already installed, skipping installation.'
+                        echo 'Docker is installed, proceeding with the pipeline.'
+                    }
+                }
+            }
+        }
+
+        stage('Check Docker Compose Installation') {
+            steps {
+                script {
+                    // Check if Docker Compose is installed
+                    def dockerComposeInstalled = sh(script: 'which docker-compose', returnStatus: true) == 0
+                    // If Docker Compose is not installed, then echo a message
+                    if (!dockerComposeInstalled) {
+                        error('Docker Compose is not installed. Please install Docker Compose before running this pipeline.')
+                    } else {
+                        echo 'Docker Compose is installed, proceeding with the pipeline.'
                     }
                 }
             }
@@ -26,25 +37,6 @@ pipeline {
                 // Assuming you have your GitHub credentials set in Jenkins' credentials store
                 // as 'github-credentials-id'
                 git credentialsId: 'github-credentials-id', url: 'https://github.com/username/repository.git'
-            }
-        }
-
-        stage('Setup Docker Compose') {
-            steps {
-                script {
-                    // Check if Docker Compose is installed
-                    def dockerComposeInstalled = sh(script: 'which docker-compose', returnStatus: true) == 0
-                    // If Docker Compose is not installed, then install it
-                    if (!dockerComposeInstalled) {
-                        echo 'Docker Compose is not installed, installing...'
-                        sh '''
-                            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-                            chmod +x /usr/local/bin/docker-compose
-                        '''
-                    } else {
-                        echo 'Docker Compose is already installed, skipping installation.'
-                    }
-                }
             }
         }
 
