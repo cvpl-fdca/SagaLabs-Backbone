@@ -101,8 +101,8 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 ui.disableAutoSignIn();
 
 
-// Set auth persistence to LOCAL
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+// Set auth persistence to NONE
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
   .catch(function(error) {
     // Handle Errors here.
     var errorCode = error.code;
@@ -143,6 +143,21 @@ var signInWithPopup = function() {
  * @param {!firebase.User} user
  */
 var handleSignedInUser = function(user) {
+  user.getIdToken().then(idToken => {
+    // Send the ID token to your server using an HTTPS POST request:
+    fetch('/sessionLogin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ idToken: idToken })
+    }).then(() => {
+      // The server will now have the ID token and can create a cookie
+    }).catch(error => {
+      console.error("Error in session login: ", error);
+    });
+  });
+
   document.getElementById('user-signed-in').style.display = 'block';
   document.getElementById('user-signed-out').style.display = 'none';
   document.getElementById('name').textContent = user.displayName;

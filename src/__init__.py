@@ -1,7 +1,7 @@
+# __init__.py
 import os
 
-from flask import Flask, url_for
-from flask import send_from_directory
+from flask import Flask, url_for, request, jsonify, abort, send_from_directory
 
 from flask_restx import Api
 
@@ -9,13 +9,13 @@ from .api.azure import azure_ns
 from .api.deploy import deploy_ns
 from .api.vpn import vpn_ns
 from .authentication.auth import auth
+from .authentication import setCookie, login, debugCookie
 
 
 def create_app():
     app = Flask(__name__)
 
-    # Import the login function here, after the app has been created
-    from .authentication.login import login
+
 
     authorizations = {
         'Server Key': {
@@ -32,8 +32,11 @@ def create_app():
     api.add_namespace(deploy_ns, path='/api/deploy')
     api.add_namespace(vpn_ns, path='/api/vpn')
 
-    # Add the login route to the Flask app
-    app.add_url_rule('/login', 'login', login)
+    # Add the login and set_cookie routes to the Flask app
+    app.add_url_rule('/login', 'login', login.login, methods=['GET'])
+    app.add_url_rule('/login/set_cookie', 'set_cookie', setCookie.set_cookie, methods=['POST'])
+    app.add_url_rule('/login/debugCookie', 'debug_cookie', debugCookie.debug_cookie, methods=['GET'])
+
 
     @app.route('/favicon.ico')
     def favicon():
