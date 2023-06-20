@@ -1,3 +1,5 @@
+// static/app.js
+
 /*
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
@@ -99,6 +101,16 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 ui.disableAutoSignIn();
 
 
+// Set auth persistence to NONE
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+  .catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.error("Error setting persistence:", errorCode, errorMessage);
+  });
+
+
 /**
  * @return {string} The URL of the FirebaseUI standalone widget.
  */
@@ -131,6 +143,21 @@ var signInWithPopup = function() {
  * @param {!firebase.User} user
  */
 var handleSignedInUser = function(user) {
+  user.getIdToken().then(idToken => {
+    // Send the ID token to your server using an HTTPS POST request:
+    fetch('/sessionLogin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ idToken: idToken })
+    }).then(() => {
+      // The server will now have the ID token and can create a cookie
+    }).catch(error => {
+      console.error("Error in session login: ", error);
+    });
+  });
+
   document.getElementById('user-signed-in').style.display = 'block';
   document.getElementById('user-signed-out').style.display = 'none';
   document.getElementById('name').textContent = user.displayName;
@@ -162,6 +189,8 @@ var handleSignedOutUser = function() {
   document.getElementById('user-signed-out').style.display = 'block';
   ui.start('#firebaseui-container', getUiConfig());
 };
+
+
 
 // Listen to change in auth state so it displays the correct UI for when
 // the user is signed in or not.

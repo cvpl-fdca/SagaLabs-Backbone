@@ -1,3 +1,4 @@
+// static/config.js
 /*
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
