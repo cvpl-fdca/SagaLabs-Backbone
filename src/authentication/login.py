@@ -22,7 +22,7 @@ def check_cookie_validity(f):
             if redirect_url:
                 return redirect(redirect_url)
             else:
-                return render_template('firebaselogin/loggedin.html')
+                return render_template('firebaseLogin/loggedin.html')
         except exceptions.FirebaseError:
             return f(*args, **kwargs)
     return decorated_function
