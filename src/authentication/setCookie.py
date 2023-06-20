@@ -18,8 +18,14 @@ def set_cookie():
         # Set cookie policy for session cookie.
         expires = datetime.now()
         expires = expires + expires_in
+        host = request.headers.get('Host')
+        if 'localhost' in host or '127.0.0.1' in host:
+            cookie_domain = None
+        else:
+            cookie_domain = '.sagalabs.dk'
         response.set_cookie(
-            'sagalabs_auth', session_cookie, expires=expires, httponly=True, secure=True, domain=".sagalabs.dk")
+            'sagalabs_auth', session_cookie, expires=expires, httponly=True, secure=True, domain=cookie_domain)
         return response
     except exceptions.FirebaseError:
         return abort(401, 'Failed to create a session cookie')
+
