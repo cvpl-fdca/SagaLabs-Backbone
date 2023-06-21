@@ -4,7 +4,6 @@ from firebase_admin import auth, exceptions
 from functools import wraps
 
 
-
 def check_cookie_validity(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -25,8 +24,8 @@ def check_cookie_validity(f):
                 return render_template('firebaseLogin/loggedin.html')
         except exceptions.FirebaseError:
             return f(*args, **kwargs)
-    return decorated_function
 
+    return decorated_function
 
 
 @check_cookie_validity
