@@ -34,6 +34,17 @@ function getUiConfig() {
               authResult.additionalUserInfo.isNewUser ?
               'New User' : 'Existing User';
         }
+
+        // Check if there's a URL in the session
+        var urlInSession = sessionStorage.getItem('redirectUrl');
+        if (urlInSession) {
+          // If there is, redirect to that URL
+          window.location.href = urlInSession;
+        } else {
+          // Otherwise, redirect to '/login'
+          window.location.href = '/login';
+        }
+
         // Do not redirect.
         return false;
       }
