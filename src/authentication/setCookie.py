@@ -2,7 +2,7 @@
 from datetime import timedelta, datetime
 
 from firebase_admin import exceptions, auth as firebaseauth
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, redirect, session
 
 
 def set_cookie():
@@ -25,7 +25,9 @@ def set_cookie():
             cookie_domain = '.sagalabs.dk'
         response.set_cookie(
             'sagalabs_auth', session_cookie, expires=expires, httponly=True, secure=True, domain=cookie_domain)
-        return response
+
+        # Redirect the user to their original URL
+        return redirect(session['redirect_url'])
     except exceptions.FirebaseError:
         return abort(401, 'Failed to create a session cookie')
 
