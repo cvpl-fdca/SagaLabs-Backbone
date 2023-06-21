@@ -27,7 +27,7 @@ def set_cookie():
             'sagalabs_auth', session_cookie, expires=expires, httponly=True, secure=True, domain=cookie_domain)
 
         # Redirect the user to their original URL
-        return redirect(session['redirect_url'])
+        return response
     except exceptions.FirebaseError:
         return abort(401, 'Failed to create a session cookie')
 

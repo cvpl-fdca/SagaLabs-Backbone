@@ -32,11 +32,47 @@
             cursor: pointer;
             border-radius: 4px;
         }
+
+        .redirect-button {
+            background-color: #4285F4;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
     </style>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var logoutButton = document.getElementById('logout-button');
+            var redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+            if (redirectUrl) {
+                logoutButton.href = '/logout?redirect=' + encodeURIComponent(redirectUrl);
+            }
+        });
+
+        function redirectToRedirectUrl() {
+            var redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            } else {
+                window.history.back();
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>You are already logged in!</h1>
     <p>Do you want to logout?</p>
-    <a href="/logout" class="logout-button">Logout</a>
+    <a id="logout-button" class="logout-button" href="/logout">Logout</a>
+    <br>
+    <br>
+    <p>Or</p>
+    <button class="redirect-button" onclick="redirectToRedirectUrl()">Go to Redirect URL</button>
 </body>
 </html>

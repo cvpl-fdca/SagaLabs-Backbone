@@ -34,7 +34,7 @@ def check_cookie_validity(f):
 @check_cookie_validity
 def login():
     # When the user attempts to login, store the redirect URL in the session
-    redirect_url = request.args.get('redirect', default=None, type=str)
+    redirect_url = request.args.get('redirect', default="/", type=str)
     if redirect_url:
         session['redirect_url'] = redirect_url
     return render_template('firebaseLogin/login.html')
