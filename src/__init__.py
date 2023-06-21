@@ -1,6 +1,7 @@
 # __init__.py
 # main file
 import os
+import secrets
 
 from flask import Flask, url_for, request, jsonify, abort, send_from_directory
 
@@ -17,6 +18,7 @@ from .authentication import firebase  # import here to ensure Firebase is initia
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = secrets.token_hex(16) # Todo, change to azure key vault and share session between servers
 
     authorizations = {
         'Server Key': {
