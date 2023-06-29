@@ -6,13 +6,12 @@ pipeline {
     environment {
         BRANCH_NAME = "${env.BRANCH_NAME}"
     }
-
-
-
+    options {
+        skipDefaultCheckout() // Disable the declarative 'Checkout SCM' step
+    }
 
     stages {
-
-         stage('Clean Workspace') {
+        stage('Clean Workspace') {
             steps {
                 cleanWs()
             }
@@ -50,23 +49,23 @@ pipeline {
 
         stage('Clone GitHub repository') {
             steps {
-                git branch: "${params.ENV}", url: 'https://github.com/cvpl-fdca/SagaLabs-Backbone.git'
+                sh 'git clone --branch ${params.ENV} https://github.com/cvpl-fdca/SagaLabs-Backbone.git .'
             }
         }
 
         stage('Get .env file') {
             steps {
-                    withCredentials([file(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_PATH')]) {
-                        sh '''
-                            cp "${ENV_FILE_PATH}" .env
-                        '''
+                withCredentials([file(credentialsId: 'env-file-backbone', variable: 'ENV_FILE_PATH')]) {
+                    sh '''
+                        cp "${ENV_FILE_PATH}" .env
+                    '''
                 }
             }
         }
 
         stage('Docker Compose Build and Run') {
             steps {
-                    sh 'docker-compose up --force-recreate --build -d'
+                sh 'docker-compose up --force-recreate --build -d'
             }
         }
     }
