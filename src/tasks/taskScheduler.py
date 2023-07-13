@@ -1,7 +1,9 @@
+# tasks/taskScheduler.py
+
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from . import azure_tasks
-from .azure_tasks import *
+from . import azureTasks
+from src.tasks.azureTasks import *
 
 # Create a scheduler instance
 scheduler = BackgroundScheduler()
@@ -9,7 +11,7 @@ scheduler = BackgroundScheduler()
 
 def start_tasks():
     # Add tasks to the scheduler
-    scheduler.add_job(azure_tasks.poll_resources, 'interval', minutes=1)
+    scheduler.add_job(azureTasks.poll_resources, 'interval', minutes=1)
 
     # Start the scheduler
     scheduler.start()

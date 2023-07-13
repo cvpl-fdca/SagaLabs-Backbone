@@ -1,3 +1,5 @@
+# tasks/azureTasks.py
+
 import json
 from apscheduler.schedulers.background import BackgroundScheduler
 from azure.identity import DefaultAzureCredential
@@ -7,6 +9,8 @@ from azure.core.exceptions import ResourceNotFoundError
 from azure.mgmt.network import NetworkManagementClient
 from dotenv import load_dotenv
 import os
+import redis
+
 load_dotenv()
 
 # Authenticate to Azure
@@ -17,14 +21,17 @@ compute_client = ComputeManagementClient(credential, os.getenv("AZURE_SUBSCRIPTI
 resource_client = ResourceManagementClient(credential, os.getenv("AZURE_SUBSCRIPTION_ID"))
 network_client = NetworkManagementClient(credential, os.getenv("AZURE_SUBSCRIPTION_ID"))
 
-# This is where you'll store the resources
-RESOURCES = ["not pulled from azure yet. wait a couple minutes for me to start up"]
+# Instantiate Redis
+redis_host = os.environ.get('REDIS_HOST', 'localhost')
+if redis_host != "redis":
+    print("Redis host environment variable not set. Meaby we are developing and this isnt running in docker? "
+          "Defaulting to: " + redis_host)
+r = redis.Redis(host=redis_host, port=6379, db=0)
 
 
 def poll_resources():
-    global RESOURCES
-    RESOURCES = {}
-
+    resources_dict = {}
+    print(redis_host)
     for resource_group in resource_client.resource_groups.list():
         try:
             if resource_group.tags and resource_group.tags.get('lab') == 'true':
@@ -34,8 +41,8 @@ def poll_resources():
                 lab_number = resource_group.tags.get('lab_number')
 
                 if range_name and lab_number:
-                    if range_name not in RESOURCES:
-                        RESOURCES[range_name] = {}
+                    if range_name not in resources_dict:
+                        resources_dict[range_name] = {}
 
                     # convert each resource to a dictionary
                     resources_in_group = [res.serialize(True) for res in resources_in_group]
@@ -46,11 +53,14 @@ def poll_resources():
                             public_ip = network_client.public_ip_addresses.get(resource_group.name, resource['name'])
                             resource['ip_address'] = public_ip.ip_address
 
-                    RESOURCES[range_name][lab_number] = resources_in_group
+                    resources_dict[range_name][lab_number] = resources_in_group
         except ResourceNotFoundError:
             print(f"Resource group {resource_group.name} not found.")
 
-    print(f"Updated resources: {len(RESOURCES)}")
+    # Store the resources in Redis
+    r.set('RESOURCES', json.dumps(resources_dict))
+
+    print(f"Updated resources: {len(resources_dict)}")
 
 
 scheduler = BackgroundScheduler()
@@ -59,5 +69,6 @@ scheduler.start()
 
 
 def get_resources():
-    global RESOURCES
-    return RESOURCES
+    # Fetch resources from Redis
+    resources = json.loads(r.get('RESOURCES') or '{}')
+    return resources

@@ -1,0 +1,88 @@
+<!--templates/firebaseLogin/login.html-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SagaLabs Authentication</title>'
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"></script>
+    <script src="/static/config.js"></script>
+    <script src="/static/common.js"></script>
+    <script src="/static/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="/static/firebaseui.css" />
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript">
+
+    // Get redirect URL from URL parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var redirectUrl = urlParams.get('redirect'); // Use '/login/set_cookie' as default
+    // FirebaseUI config.
+    var uiConfig = {
+        // Url to redirect to after a successful sign-in.
+        'signInSuccessUrl': redirectUrl,
+        'callbacks': {
+            'signInSuccessWithAuthResult': function(authResult, redirectUrlFromFirebase) {
+                var user = authResult.user;
+                user.getIdToken().then(function(idToken) {
+                    // Make a POST request to your server with the ID token
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/login/set_cookie');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            // If successful, manually redirect to the original URL
+                            window.location.href = redirectUrl; // Use redirectUrl from URL parameters
+                        }
+                    };
+                    xhr.send(JSON.stringify({ idToken: idToken }));
+                });
+                return false;  // Prevent default redirect
+            }
+        },
+        'signInOptions': [
+          // TODO(developer): Remove the providers you don't need for your app.
+          {
+            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            // Required to enable ID token credentials for this provider.
+            clientId: CLIENT_ID
+          },
+          firebase.auth.GithubAuthProvider.PROVIDER_ID,
+          {
+            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            signInMethod: getEmailSignInMethod(),
+            disableSignUp: {
+              status: getDisableSignUpStatus()
+            }
+          },
+          {
+            provider: 'microsoft.com',
+          },
+        ],
+        // Terms of service url.
+        'tosUrl': 'https://www.google.com',
+        'credentialHelper': CLIENT_ID && CLIENT_ID != 'YOUR_OAUTH_CLIENT_ID' ?
+            firebaseui.auth.CredentialHelper.GOOGLE_YOLO :
+            firebaseui.auth.CredentialHelper.NONE,
+        'adminRestrictedOperation': {
+          status: getAdminRestrictedOperationStatus()
+        }
+      };
+
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded to include the FirebaseUI sign-in widget
+      // within the element corresponding to the selector specified.
+      ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+  </head>
+  <body>
+    <div id="firebaseui-auth-container"></div>
+  </body>
+</html>
